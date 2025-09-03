@@ -48,9 +48,9 @@ async def main(page: ft.Page):
         nav_rail.current.extended = not nav_rail.current.extended
         page.update()
 
-    # State for theme mode
+    # State for theme mode, switch kecil dan di pojok kiri bawah
     is_dark = page.theme_mode == ft.ThemeMode.DARK
-    theme_switch = ft.Switch(value=is_dark)
+    theme_switch = ft.Switch(value=is_dark, scale=0.7)
 
     def on_theme_toggle(e):
         page.theme_mode = (
@@ -63,9 +63,9 @@ async def main(page: ft.Page):
 
     theme_toggle_row = ft.Row(
         [
-            ft.Icon(ft.Icons.LIGHT_MODE, size=18),
+            ft.Icon(ft.Icons.LIGHT_MODE, size=16),
             theme_switch,
-            ft.Icon(ft.Icons.DARK_MODE, size=18),
+            ft.Icon(ft.Icons.DARK_MODE, size=16),
         ],
         alignment=ft.MainAxisAlignment.CENTER,
     )
@@ -74,35 +74,60 @@ async def main(page: ft.Page):
         ref=nav_rail,
         selected_index=selected_index.current,
         on_change=on_nav_change,
-        label_type=ft.NavigationRailLabelType.ALL,
+        label_type=ft.NavigationRailLabelType.NONE,
         extended=False,
         min_width=60,
         min_extended_width=150,
         group_alignment=-0.9,
         leading=ft.IconButton(
-            icon=ft.Icons.MENU, tooltip="Toggle Navigation", on_click=toggle_sidebar
+            icon=ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED,
+            tooltip="Toggle Navigation",
+            on_click=toggle_sidebar,
         ),
         destinations=[
             ft.NavigationRailDestination(icon=ft.Icons.HOME, label="Dashboard"),
             ft.NavigationRailDestination(icon=ft.Icons.SEND, label="Broadcast"),
             ft.NavigationRailDestination(icon=ft.Icons.SETTINGS, label="Settings"),
         ],
-        trailing=ft.Container(
-            theme_toggle_row,
-            alignment=ft.alignment.bottom_center,
-            padding=10,
+        # trailing dihapus, theme switch akan dipindah ke pojok kiri bawah window
+    )
+
+    # Header di atas, berisi judul dan theme switch di kanan atas
+    header = ft.Container(
+        ft.Row(
+            [
+                ft.Text("MKIT Broadcaster", size=22, weight=ft.FontWeight.BOLD),
+                ft.Container(
+                    theme_toggle_row,
+                    alignment=ft.alignment.center_right,
+                    padding=0,
+                    width=140,
+                ),
+            ],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
         ),
+        padding=ft.padding.only(left=20, right=20, top=12, bottom=8),
+        bgcolor="#1dd0d6",  # warna permukaan terang
+        shadow=ft.BoxShadow(blur_radius=8, color="#0D010121", offset=(0, 2)),
     )
 
     page.add(
-        ft.Row(
+        ft.Column(
             [
-                nav,
-                ft.VerticalDivider(width=1),
-                ft.Container(content, expand=True, alignment=ft.alignment.center),
+                header,
+                ft.Row(
+                    [
+                        nav,
+                        ft.VerticalDivider(width=1),
+                        ft.Container(
+                            content, expand=True, alignment=ft.alignment.center
+                        ),
+                    ],
+                    expand=True,
+                    alignment=ft.MainAxisAlignment.CENTER,
+                ),
             ],
             expand=True,
-            alignment=ft.MainAxisAlignment.CENTER,
         )
     )
 
