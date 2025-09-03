@@ -48,6 +48,28 @@ async def main(page: ft.Page):
         nav_rail.current.extended = not nav_rail.current.extended
         page.update()
 
+    # State for theme mode
+    is_dark = page.theme_mode == ft.ThemeMode.DARK
+    theme_switch = ft.Switch(value=is_dark)
+
+    def on_theme_toggle(e):
+        page.theme_mode = (
+            ft.ThemeMode.DARK if theme_switch.value else ft.ThemeMode.LIGHT
+        )
+        logger.info(f"Theme changed to: {page.theme_mode}")
+        page.update()
+
+    theme_switch.on_change = on_theme_toggle
+
+    theme_toggle_row = ft.Row(
+        [
+            ft.Icon(ft.Icons.LIGHT_MODE, size=18),
+            theme_switch,
+            ft.Icon(ft.Icons.DARK_MODE, size=18),
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+    )
+
     nav = ft.NavigationRail(
         ref=nav_rail,
         selected_index=selected_index.current,
@@ -65,6 +87,11 @@ async def main(page: ft.Page):
             ft.NavigationRailDestination(icon=ft.Icons.SEND, label="Broadcast"),
             ft.NavigationRailDestination(icon=ft.Icons.SETTINGS, label="Settings"),
         ],
+        trailing=ft.Container(
+            theme_toggle_row,
+            alignment=ft.alignment.bottom_center,
+            padding=10,
+        ),
     )
 
     page.add(
