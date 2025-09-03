@@ -171,5 +171,9 @@ src/_version.py
 # vscode
 .vscode/
 
-# github
-.github/
+# instructions
+*.instructions.md
+*.prompt.md
+
+# personal notes
+*.notes.md
