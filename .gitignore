@@ -181,3 +181,4 @@ src/_version.py
 
 # example
 .example/
+examples/
