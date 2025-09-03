@@ -177,3 +177,4 @@ src/_version.py
 
 # personal notes
 *.notes.md
+*.todo
