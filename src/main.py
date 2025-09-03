@@ -46,6 +46,11 @@ async def main(page: ft.Page):
 
     def toggle_sidebar(e):
         nav_rail.current.extended = not nav_rail.current.extended
+        # update icon
+        if nav_rail.current.extended:
+            sidebar_toggle_btn.icon = ft.Icons.ARROW_CIRCLE_RIGHT_OUTLINED
+        else:
+            sidebar_toggle_btn.icon = ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED
         page.update()
 
     # State for theme mode, switch kecil dan di pojok kiri bawah
@@ -70,6 +75,13 @@ async def main(page: ft.Page):
         alignment=ft.MainAxisAlignment.CENTER,
     )
 
+    # Buat IconButton sebagai variabel agar bisa diubah iconnya
+    sidebar_toggle_btn = ft.IconButton(
+        icon=ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED,
+        tooltip="Toggle Navigation",
+        on_click=toggle_sidebar,
+    )
+
     nav = ft.NavigationRail(
         ref=nav_rail,
         selected_index=selected_index.current,
@@ -79,11 +91,7 @@ async def main(page: ft.Page):
         min_width=60,
         min_extended_width=150,
         group_alignment=-0.9,
-        leading=ft.IconButton(
-            icon=ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED,
-            tooltip="Toggle Navigation",
-            on_click=toggle_sidebar,
-        ),
+        leading=sidebar_toggle_btn,
         destinations=[
             ft.NavigationRailDestination(icon=ft.Icons.HOME, label="Dashboard"),
             ft.NavigationRailDestination(icon=ft.Icons.SEND, label="Broadcast"),
@@ -96,7 +104,7 @@ async def main(page: ft.Page):
     header = ft.Container(
         ft.Row(
             [
-                ft.Text("MKIT Broadcaster", size=17, weight=ft.FontWeight.BOLD),
+                ft.Text(value="MKIT Broadcaster", size=17, weight=ft.FontWeight.BOLD),
                 ft.Container(
                     content=theme_toggle_row,
                     alignment=ft.alignment.center_right,
