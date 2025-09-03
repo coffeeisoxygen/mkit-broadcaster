@@ -38,7 +38,8 @@ product = "mkit-broadcaster"
 company = "modularkit"
 copyright = "Copyright (C) 2025 by modularkit"
 
-[tool.flet.src]
+
+[tool.flet.app]
 module = "main"
 path = "src"
 exclude = ["assets"]
