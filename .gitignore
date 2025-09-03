@@ -167,3 +167,9 @@ storage/
 
 # versioning
 src/_version.py
+
+# vscode
+.vscode/
+
+# github
+.github/
