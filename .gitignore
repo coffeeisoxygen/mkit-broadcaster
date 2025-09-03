@@ -182,3 +182,6 @@ src/_version.py
 # example
 .example/
 examples/
+
+# experiments kode
+experiments/

@@ -1,12 +1,8 @@
 from datetime import datetime
-from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from src.models import Base
-
-if TYPE_CHECKING:
-    from .db_session import Session
 
 
 class User(Base):
@@ -35,5 +31,3 @@ class User(Base):
         onupdate=datetime.now,
         nullable=False,
     )
-
-    sessions: Mapped[list["Session"]] = relationship("Session", back_populates="user")
