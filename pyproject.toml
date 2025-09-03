@@ -9,6 +9,7 @@ authors = [
 ]
 dependencies = [
   "aiosqlite>=0.21.0",
+  "alembic>=1.16.5",
   "flet[all]==0.28.3",
   "loguru>=0.7.3",
   "loguru-config>=0.1.0",

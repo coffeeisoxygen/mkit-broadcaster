@@ -23,6 +23,7 @@ class Settings(BaseSettings):
         extra="ignore",
         case_sensitive=False,
     )
+    BOT__TOKEN: str
     ENV: ConfigEnvironment = ConfigEnvironment()
     DB: ConfigDatabase = ConfigDatabase()
     ADM: ConfigAdminAccount = ConfigAdminAccount()
