@@ -96,9 +96,9 @@ async def main(page: ft.Page):
     header = ft.Container(
         ft.Row(
             [
-                ft.Text("MKIT Broadcaster", size=22, weight=ft.FontWeight.BOLD),
+                ft.Text("MKIT Broadcaster", size=17, weight=ft.FontWeight.BOLD),
                 ft.Container(
-                    theme_toggle_row,
+                    content=theme_toggle_row,
                     alignment=ft.alignment.center_right,
                     padding=0,
                     width=140,
