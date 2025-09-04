@@ -1,59 +1,49 @@
-"""schemas for user generation by admin."""
+from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator
 
 
-class UserBase(BaseModel):
-    """Base model for user."""
+class UserBaseConfig(BaseModel):
+    """Base schema configuration for user-related schemas."""
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+
+class UserCreate(UserBaseConfig):
+    """Schema for creating single user."""
 
     username: str = Field(..., min_length=3, max_length=50)
     full_name: str = Field(..., min_length=3, max_length=100)
-
-
-class UserCreate(UserBase):
-    """Model for creating a user."""
-
     password: str = Field(..., min_length=6, max_length=100)
 
 
-class AdminCreateUser(UserCreate):
-    """Model for creating a user."""
-
-    is_superuser: bool
-    is_active: bool
-    admin_password: str = Field(..., min_length=6, max_length=100)
-
-
-class UserOut(UserBase):
-    """Model for outputting user data."""
+class UserOut(UserBaseConfig):
+    """Schema for single user output."""
 
     id: int
+    username: str
+    full_name: str
     is_active: bool
     is_superuser: bool
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
 
 
-class UserList(BaseModel):
-    """Model for listing users."""
-
-    model_config = ConfigDict(from_attributes=True)
-
-    users: list[UserOut]
-
-
-class UserInDB(UserOut):
-    """Model for user in database with hashed password."""
+class UserinDB(UserOut):
+    """Schema for user in database (includes hashed password)."""
 
     hashed_password: str
 
 
-class UserUpdatePassword(BaseModel):
-    """Model for updating user password."""
+class UserUpdateProfile(UserBaseConfig):
+    """Schema for updating user profile."""
 
-    model_config = ConfigDict(from_attributes=True)
+    username: str | None = Field(None, min_length=3, max_length=50)
+    full_name: str | None = Field(None, min_length=3, max_length=100)
+
+
+class UserUpdatePassword(UserBaseConfig):
+    """Schema for updating user password."""
 
     old_password: str = Field(..., min_length=6, max_length=100)
     new_password: str = Field(..., min_length=6, max_length=100)
@@ -68,20 +58,12 @@ class UserUpdatePassword(BaseModel):
         return value
 
 
-class AdminUpdateUser(BaseModel):
-    """Model for admin updating user details."""
+class UserLogin(UserBaseConfig):
+    """Schema for user login."""
 
-    model_config = ConfigDict(from_attributes=True)
-
-    full_name: str = Field(..., min_length=3, max_length=100)
-    is_active: bool
-    is_superuser: bool
-    admin_password: str = Field(..., min_length=6, max_length=100)
+    username: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=6, max_length=100)
 
 
-class UserUpdateProfile(BaseModel):
-    """Model for user updating their profile."""
-
-    model_config = ConfigDict(from_attributes=True)
-
-    full_name: str = Field(..., min_length=3, max_length=100)
+class UserLoginResponse(UserOut):
+    pass
