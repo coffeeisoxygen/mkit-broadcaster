@@ -41,7 +41,10 @@ class DatabaseSessionManager:
         if self._sessionmaker is None:
             logger.exception("Sessionmaker is not available")
             raise DataBaseServiceError(
-                message="Sessionmaker is not available", context={}
+                message="Sessionmaker is not available",
+                context={
+                    "db_url": self.engine.url.render_as_string(hide_password=True)
+                },
             )
 
         async with self._sessionmaker() as session:
