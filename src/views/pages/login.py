@@ -1,5 +1,6 @@
 import flet as ft
 from loguru import logger
+from src.custom.exception.base_exc import AppExceptionError
 from src.schemas.sch_user import UserLogin
 
 from controller.auth_controller import login
@@ -49,6 +50,13 @@ def login_page(page: ft.Page) -> ft.Column:
             success_text.value = state.success
             error_text.value = ""
             dialog.content = success_text
+        except AppExceptionError as app_ex:
+            logger.exception(f"Login error: {app_ex}")
+            state.error = app_ex.message
+            state.success = ""
+            error_text.value = state.error
+            success_text.value = ""
+            dialog.content = error_text
         except Exception as ex:
             logger.exception(f"Login error: {ex}")
             state.error = str(ex)
