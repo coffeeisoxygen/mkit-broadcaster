@@ -36,6 +36,14 @@ class UserOut(UserBase):
     updated_at: str
 
 
+class UserList(BaseModel):
+    """Model for listing users."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    users: list[UserOut]
+
+
 class UserInDB(UserOut):
     """Model for user in database with hashed password."""
 

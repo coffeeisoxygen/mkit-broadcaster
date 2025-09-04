@@ -1,3 +1,6 @@
+import asyncio
+from datetime import datetime
+
 import flet as ft
 from loguru import logger
 
@@ -8,6 +11,16 @@ from views.settings import settings_page
 
 
 async def main(page: ft.Page):
+    clock_text = ft.Text(value="", size=15, weight=ft.FontWeight.W_600)
+
+    async def update_clock():
+        while True:
+            now = datetime.now().strftime("%H:%M:%S")
+            clock_text.value = now
+            page.update()
+            await asyncio.sleep(1)
+
+    page.run_task(update_clock)
     page.title = "MKIT Broadcaster"
     page.theme_mode = ft.ThemeMode.LIGHT
 
@@ -108,6 +121,7 @@ async def main(page: ft.Page):
         ft.Row(
             [
                 ft.Text(value="MKIT Broadcaster", size=17, weight=ft.FontWeight.BOLD),
+                clock_text,
                 ft.Container(
                     content=theme_toggle_row,
                     alignment=ft.alignment.center_right,
