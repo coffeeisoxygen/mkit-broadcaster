@@ -43,7 +43,6 @@ def build_main_layout(page: ft.Page):
         state.nav_rail,
         state.selected_index,
         lambda e: on_nav_change(e, state),
-        lambda e: toggle_sidebar(e, state),
         state.sidebar_toggle_btn,
     )
     header = build_header(
