@@ -59,6 +59,7 @@ def show_login_modal(page: ft.Page):
     cancel_btn = ft.TextButton("Keluar")
 
     async def handle_login(_: ft.ControlEvent):
+        logger.info("Login function called for username: {}", login_state.username)
         login_state.loading = True
         login_btn.disabled = True
         page.update()

@@ -8,6 +8,6 @@ class IPasswordHasher(ABC):
         pass
 
     @abstractmethod
-    def verify(self, password: str, hashed: str) -> bool:
+    def verify(self, hashed: str, password: str) -> bool:
         """Verify a plain password against a hash."""
         pass
