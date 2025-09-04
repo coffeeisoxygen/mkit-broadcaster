@@ -185,3 +185,6 @@ examples/
 
 # experiments kode
 experiments/
+
+# *.db
+*.db
