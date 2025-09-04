@@ -4,10 +4,12 @@ from datetime import datetime
 import flet as ft
 from loguru import logger
 
-from views.broadcast import broadcast_page
-from views.dashboard import dashboard_page
-from views.profile import profile_page
-from views.settings import settings_page
+from views.component.header import build_header
+from views.component.sidebar import build_sidebar
+from views.pages.broadcast import broadcast_page
+from views.pages.dashboard import dashboard_page
+from views.pages.profile import profile_page
+from views.pages.settings import settings_page
 
 
 async def main(page: ft.Page):
@@ -97,43 +99,18 @@ async def main(page: ft.Page):
         on_click=toggle_sidebar,
     )
 
-    nav = ft.NavigationRail(
-        ref=nav_rail,
-        selected_index=selected_index.current,
-        on_change=on_nav_change,
-        label_type=ft.NavigationRailLabelType.NONE,
-        extended=False,
-        min_width=60,
-        min_extended_width=150,
-        group_alignment=-0.9,
-        leading=sidebar_toggle_btn,
-        destinations=[
-            ft.NavigationRailDestination(icon=ft.Icons.HOME, label="Dashboard"),
-            ft.NavigationRailDestination(icon=ft.Icons.SEND, label="Broadcast"),
-            ft.NavigationRailDestination(icon=ft.Icons.SETTINGS, label="Settings"),
-            ft.NavigationRailDestination(icon=ft.Icons.PERSON, label="Profile"),
-        ],
-        # trailing dihapus, theme switch akan dipindah ke pojok kiri bawah window
+    nav = build_sidebar(
+        nav_rail,
+        selected_index,
+        on_nav_change,
+        toggle_sidebar,
+        sidebar_toggle_btn,
     )
 
-    # Header di atas, berisi judul dan theme switch di kanan atas
-    header = ft.Container(
-        ft.Row(
-            [
-                ft.Text(value="MKIT Broadcaster", size=17, weight=ft.FontWeight.BOLD),
-                clock_text,
-                ft.Container(
-                    content=theme_toggle_row,
-                    alignment=ft.alignment.center_right,
-                    padding=0,
-                    width=140,
-                ),
-            ],
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-        ),
-        padding=ft.padding.only(left=20, right=20, top=12, bottom=8),
-        bgcolor="#1dd0d6",  # warna permukaan terang
-        shadow=ft.BoxShadow(blur_radius=8, color="#0D010121", offset=(0, 2)),
+    header = build_header(
+        "MKIT Broadcaster",
+        clock_text,
+        theme_toggle_row,
     )
 
     page.add(
