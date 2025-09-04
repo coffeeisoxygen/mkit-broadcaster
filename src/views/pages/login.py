@@ -1,10 +1,10 @@
 import flet as ft
 from loguru import logger
 from src.custom.exception.base_exc import AppExceptionError
-from src.main_app import show_dashboard
 from src.schemas.sch_user import UserLogin
 
 from controller.auth_controller import login
+from core.state import app_state
 
 
 class LoginState:
@@ -51,11 +51,11 @@ def login_page(page: ft.Page) -> ft.Column:
             success_text.value = state.success
             error_text.value = ""
             dialog.content = success_text
-            # Set session and redirect to dashboard
-            page.session.set("is_logged_in", True)
+            # Set centralized state and redirect
+            app_state.login({"username": state.username})
             page.update()
-
-            show_dashboard(page)
+            if hasattr(page, "on_login_success") and callable(page.on_login_success):
+                page.on_login_success()
         except AppExceptionError as app_ex:
             logger.exception(f"Login error: {app_ex}")
             state.error = app_ex.message

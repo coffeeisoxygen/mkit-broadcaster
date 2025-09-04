@@ -4,6 +4,7 @@ from src.config import get_settings
 from src.schemas.sch_user import UserCreate
 
 from controller.user_check_controller import seed_user_if_empty, user_exists
+from core.state import app_state
 from views.main_layout import build_main_layout
 from views.pages.login import login_page
 
@@ -47,7 +48,17 @@ async def main_app(page: ft.Page):
 
     await seed_admin(page)  # <-- panggil seeder di awal
 
-    if not page.session.get("is_logged_in"):
-        show_login(page)
-    else:
+    def goto_dashboard():
+        app_state.is_logged_in = True
         show_dashboard(page)
+
+    def goto_login():
+        app_state.is_logged_in = False
+        show_login(page)
+
+    # Pass navigation callbacks to login page
+    if not app_state.is_logged_in:
+        page.on_login_success = goto_dashboard
+        goto_login()
+    else:
+        goto_dashboard()
