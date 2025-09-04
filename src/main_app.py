@@ -122,7 +122,9 @@ async def main_app(page: ft.Page):
 
     await seed_admin()  # seed admin di awal
 
+    # Build layout utama dulu
+    show_dashboard(page)
+
+    # Jika belum login, tampilkan login modal sebagai overlay
     if not app_state.is_logged_in:
         show_login_modal(page)
-    else:
-        show_dashboard(page)
