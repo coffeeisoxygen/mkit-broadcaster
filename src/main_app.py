@@ -66,18 +66,22 @@ async def main_app(page: ft.Page):
             page.update()
             try:
                 user_input = UserLogin(
-                    username=login_state.username,
-                    password=login_state.password,
+                    username=login_state.username, password=login_state.password
                 )
                 await login_service(user_input)
                 app_state.login({"username": login_state.username})
                 dialog.open = False
+                page.update()
+                if dialog in page.overlay:
+                    page.overlay.remove(dialog)
+                page.update()
+                logger.info("Navigating to dashboard after login success")
                 show_dashboard(page)
             except Exception as ex:
                 login_state.error = str(ex)
                 error_text.value = login_state.error
                 dialog.content = error_text
-            page.update()
+                page.update()
             login_state.loading = False
 
         login_btn = ft.ElevatedButton("Login", on_click=handle_login)
