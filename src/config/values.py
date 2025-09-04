@@ -56,8 +56,6 @@ class ConfigAdminAccount(BaseSettings):
     username: str = "admin"
     full_name: str = "Administrator"
     password: str = "admin123"
-    is_superuser: bool = True
-    is_active: bool = True
 
 
 class ConfigJwt(BaseSettings):

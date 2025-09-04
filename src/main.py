@@ -1,7 +1,7 @@
 import flet as ft
 from loguru import logger
 
-from views.main_app import main_app
+from main_app import main_app
 
 if __name__ == "__main__":
     logger.info("Starting Flet app...")

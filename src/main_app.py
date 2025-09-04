@@ -1,6 +1,8 @@
 import flet as ft
+from src.config import get_settings
+from src.schemas.sch_user import UserCreate
 
-from controller.user_check_controller import seed_user_if_empty
+from controller.user_check_controller import seed_user_if_empty, user_exists
 from views.main_layout import build_main_layout
 from views.pages.login import login_page
 
@@ -17,7 +19,15 @@ def show_dashboard(page):
 
 
 async def seed_admin(page):
-    await seed_user_if_empty({"username": "admin", "password": "admin"})
+    settings = get_settings()
+    admin_data = settings.ADM
+    if not await user_exists():
+        user_create = UserCreate(
+            username=admin_data.username,
+            full_name=admin_data.full_name,
+            password=admin_data.password,
+        )
+        await seed_user_if_empty(user_create)
 
 
 def main_app(page: ft.Page):
