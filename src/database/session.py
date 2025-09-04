@@ -1,3 +1,18 @@
+"""Database session management for async SQLAlchemy operations.
+
+This module provides an async database session manager for handling connections
+and sessions using SQLAlchemy's async engine. It supports context-managed
+sessions, proper error handling, and singleton access for use throughout the
+application.
+
+Typical usage:
+    async with sessionmanager.session() as session:
+        # perform database operations
+
+The session manager is configured using application settings and supports
+custom engine parameters for different database backends.
+"""
+
 import contextlib
 from collections.abc import AsyncIterator
 
