@@ -15,11 +15,11 @@ from views.services.clock_service import run_clock
 from views.utils.window_config import configure_window
 
 
-async def build_main_layout(page: ft.Page):
+def build_main_layout(page: ft.Page):
     state = MainPageState(page)
     configure_window(page)
     clock_text = ft.Text(value="", size=15, weight=ft.FontWeight.W_600)
-    page.run_task(lambda: run_clock(clock_text, page))
+    page.run_task(run_clock, clock_text, page)
     state.pages = PAGES
     state.content = ft.Container(
         content=state.pages[0][1](page),
