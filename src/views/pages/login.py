@@ -1,4 +1,5 @@
 import flet as ft
+from loguru import logger
 from src.schemas.sch_user import UserLogin
 
 from controller.auth_controller import login
@@ -36,8 +37,12 @@ def login_page(page: ft.Page) -> ft.Column:
     async def handle_login(_: ft.ControlEvent):
         state.loading = True
         page.update()
+        logger.info(
+            f"Login attempt: username='{state.username}', password='{state.password}'"
+        )
         try:
             user_input = UserLogin(username=state.username, password=state.password)
+            logger.info(f"Calling auth_controller.login with: {user_input}")
             await login(user_input)
             state.success = "Login berhasil!"
             state.error = ""
@@ -45,6 +50,7 @@ def login_page(page: ft.Page) -> ft.Column:
             error_text.value = ""
             dialog.content = success_text
         except Exception as ex:
+            logger.exception(f"Login error: {ex}")
             state.error = str(ex)
             state.success = ""
             error_text.value = state.error

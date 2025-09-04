@@ -1,4 +1,5 @@
 import flet as ft
+from loguru import logger
 from src.config import get_settings
 from src.schemas.sch_user import UserCreate
 
@@ -21,16 +22,22 @@ def show_dashboard(page):
 async def seed_admin(page):
     settings = get_settings()
     admin_data = settings.ADM
-    if not await user_exists():
-        user_create = UserCreate(
-            username=admin_data.username,
-            full_name=admin_data.full_name,
-            password=admin_data.password,
-        )
-        await seed_user_if_empty(user_create)
+    try:
+        if not await user_exists():
+            logger.info("Seeding admin user: {}", admin_data.username)
+            user_create = UserCreate(
+                username=admin_data.username,
+                full_name=admin_data.full_name,
+                password=admin_data.password,
+            )
+            await seed_user_if_empty(user_create)
+        else:
+            logger.info("Admin user already exists: {}", admin_data.username)
+    except Exception as e:
+        logger.error("Error seeding admin user: {}", e)
 
 
-def main_app(page: ft.Page):
+async def main_app(page: ft.Page):
     """Entry point utama aplikasi Flet MKIT Broadcaster.
 
     Mengatur layout utama dari builder modular.
@@ -38,7 +45,8 @@ def main_app(page: ft.Page):
     page.title = "MKIT Broadcaster"
     page.theme_mode = ft.ThemeMode.LIGHT
 
-    # Cek session login
+    await seed_admin(page)  # <-- panggil seeder di awal
+
     if not page.session.get("is_logged_in"):
         show_login(page)
     else:
