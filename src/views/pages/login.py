@@ -1,6 +1,7 @@
 import flet as ft
 from loguru import logger
 from src.custom.exception.base_exc import AppExceptionError
+from src.main_app import show_dashboard
 from src.schemas.sch_user import UserLogin
 
 from controller.auth_controller import login
@@ -50,6 +51,11 @@ def login_page(page: ft.Page) -> ft.Column:
             success_text.value = state.success
             error_text.value = ""
             dialog.content = success_text
+            # Set session and redirect to dashboard
+            page.session.set("is_logged_in", True)
+            page.update()
+
+            show_dashboard(page)
         except AppExceptionError as app_ex:
             logger.exception(f"Login error: {app_ex}")
             state.error = app_ex.message
