@@ -3,6 +3,7 @@ from loguru import logger
 
 from views.broadcast import broadcast_page
 from views.dashboard import dashboard_page
+from views.profile import profile_page
 from views.settings import settings_page
 
 
@@ -26,6 +27,7 @@ async def main(page: ft.Page):
         ("Dashboard", dashboard_page),
         ("Broadcast", broadcast_page),
         ("Settings", settings_page),
+        ("Profile", profile_page),
     ]
     # Konten utama dengan lebar maksimal dan padding
     content = ft.Container(
@@ -48,9 +50,9 @@ async def main(page: ft.Page):
         nav_rail.current.extended = not nav_rail.current.extended
         # update icon
         if nav_rail.current.extended:
-            sidebar_toggle_btn.icon = ft.Icons.ARROW_CIRCLE_RIGHT_OUTLINED
-        else:
             sidebar_toggle_btn.icon = ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED
+        else:
+            sidebar_toggle_btn.icon = ft.Icons.ARROW_CIRCLE_RIGHT_OUTLINED
         page.update()
 
     # State for theme mode, switch kecil dan di pojok kiri bawah
@@ -77,7 +79,7 @@ async def main(page: ft.Page):
 
     # Buat IconButton sebagai variabel agar bisa diubah iconnya
     sidebar_toggle_btn = ft.IconButton(
-        icon=ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED,
+        icon=ft.Icons.ARROW_CIRCLE_RIGHT_OUTLINED,
         tooltip="Toggle Navigation",
         on_click=toggle_sidebar,
     )
@@ -96,6 +98,7 @@ async def main(page: ft.Page):
             ft.NavigationRailDestination(icon=ft.Icons.HOME, label="Dashboard"),
             ft.NavigationRailDestination(icon=ft.Icons.SEND, label="Broadcast"),
             ft.NavigationRailDestination(icon=ft.Icons.SETTINGS, label="Settings"),
+            ft.NavigationRailDestination(icon=ft.Icons.PERSON, label="Profile"),
         ],
         # trailing dihapus, theme switch akan dipindah ke pojok kiri bawah window
     )
