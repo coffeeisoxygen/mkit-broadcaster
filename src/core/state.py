@@ -1,5 +1,9 @@
+# User/Login state for modal/dialog
+
+
 class AppState:
     """Centralized application state for session, navigation, and user info.
+
     Extendable for more features (e.g., settings, broadcast, etc).
     """
 
@@ -20,3 +24,13 @@ class AppState:
 
 # Singleton instance for global access
 app_state = AppState()
+
+
+class LoginState:
+    def __init__(self):
+        self.username = ""
+        self.password = ""
+        self.error = ""
+        self.success = ""
+        self.loading = False
+        self.dialog_open = False
